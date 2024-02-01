@@ -48,9 +48,34 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.23.9",
     "@babel/preset-typescript": "^7.23.3",
     "@types/react-test-renderer": "^18.0.7",
+    "babel-jest": "^29.7.0",
     "react-test-renderer": "^18.2.0",
     "ts-jest": "^29.1.2"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "dist/"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "moduleNameMapper": {
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
+    },
+    "setupFilesAfterEnv": [
+      "./setupTests.ts"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov"
+    ],
+    "coverageDirectory": ".",
+    "transform": {
+      ".(js|jsx)": "babel-jest",
+      ".(ts|tsx)": "ts-jest"
+    }
   }
 }
