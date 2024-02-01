@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
+import * as dotenv from 'dotenv';
 import { Button, Row, Col, Card, Divider, Input, Flex ,Spin} from 'antd';
 import { RightSquareOutlined, EditFilled,DeleteFilled } from '@ant-design/icons';
-
+import const_1 from './constants'
 
 
 interface Duty {
@@ -32,10 +33,10 @@ var App: React.FC = () => {
       return
   }
     if(targetDuty.id === "-1"){
-      await axios.post(`http://localhost:8080/duty`,{"dutyName": targetDuty.name})
+      await axios.post(`${const_1.REACT_APP_API_SERVER}/duty`,{"dutyName": targetDuty.name})
       .catch(error => console.error(error));
     } else {
-      await axios.put(`http://localhost:8080/duty?dutyId=${targetDuty.id}&dutyName=${targetDuty.name}`)
+      await axios.put(`${const_1.REACT_APP_API_SERVER}/duty?dutyId=${targetDuty.id}&dutyName=${targetDuty.name}`)
       .catch(error => console.error(error));
     }
       setTargetDuty({id: "", name: ""})
@@ -43,14 +44,14 @@ var App: React.FC = () => {
   }
 
   const handleDeleteDutyClick = async(dutyId:string) => {
-    await axios.delete(`http://localhost:8080/duty?dutyId=${dutyId}`)
+    await axios.delete(`${const_1.REACT_APP_API_SERVER}/duty?dutyId=${dutyId}`)
     .catch(error => console.error(error));
     loadAllDuties();
   }
 
 
   const loadAllDuties = () => {
-    axios.get('http://localhost:8080/duty')
+    axios.get(`${const_1.REACT_APP_API_SERVER}/duty`)
     .then(response => {
       setDutyFullLists(response.data.result)
     })
@@ -114,106 +115,5 @@ var App: React.FC = () => {
     </Row>
   );
 }
-
-
-
-const TodoList: React.FC = () => {
-
-  const [duties, setDuties] = useState<Duty[]>([]);
-  const [newDutyName, setNewDutyName] = useState('');
-
-  useEffect(() => {
-    // Fetch duties from the backend
-    fetch('/api/duties')
-      .then(response => response.json())
-      .then(data => setDuties(data))
-      .catch(error => console.error(error));
-  }, []);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewDutyName(event.target.value);
-  };
-
-  const handleAddDuty = () => {
-    // Create a new duty and add it to the backend
-    const newDuty: Duty = {
-      id: Math.random().toString(),
-      name: newDutyName
-    };
-
-    fetch('/api/duties', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newDuty)
-    })
-      .then(response => response.json())
-      .then(data => {
-        setDuties(prevDuties => [...prevDuties, data]);
-        setNewDutyName('');
-      })
-      .catch(error => console.error(error));
-  };
-
-  const handleUpdateDuty = (id: string, newName: string) => {
-    // Update the name of an existing duty in the backend
-    const updatedDuties = duties.map(duty => {
-      if (duty.id === id) {
-        return { ...duty, name: newName };
-      }
-      return duty;
-    });
-
-    fetch(`/api/duties/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name: newName })
-    })
-      .then(response => response.json())
-      .then(() => setDuties(updatedDuties))
-      .catch(error => console.error(error));
-  };
-
-  const handleDeleteDuty = (id: string) => {
-    // Delete a duty from the backend
-    fetch(`/api/duties/${id}`, {
-      method: 'DELETE'
-    })
-      .then(() => {
-        setDuties(prevDuties => prevDuties.filter(duty => duty.id !== id));
-      })
-      .catch(error => console.error(error));
-  };
-
-  return (
-    <div>
-      <h1>To-Do List</h1>
-      <ul>
-        {duties.map(duty => (
-          <li key={duty.id}>
-            <input
-              type="text"
-              value={duty.name}
-              onChange={(event) => handleUpdateDuty(duty.id, event.target.value)}
-            />
-            <button onClick={() => handleDeleteDuty(duty.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-      <input
-        type="text"
-        value={newDutyName}
-        onChange={handleInputChange}
-      />
-      <button onClick={handleAddDuty}>Add Duty</button>
-    </div>
-  );
-};
-
-// export default TodoList;
-
 
 export default App;
