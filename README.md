@@ -51,10 +51,12 @@ Clone this repository if you would like to have a try locally, you can follow th
 
 2. As yarn is used with this application, simply install all necessary  dependencies with following command : yarn install
 
-3. According to your local environment settings, you will need to setup a ".env" file inside the "Services" folder, with below content :
-    DB_NAME=yourLocalDBName
-    DB_USERNAME=yourUsername
-    DB_PASSWORD=yourPWD
-    DB_HOST=localhost
+3. According to your local environment settings, you will need to setup the "constants.js" file inside the "src" folder, with below content :
+
+let  const_1 = {    
+     "REACT_APP_API_SERVER" : 'http://localhost:8080' //(your localhost, the app will listening on port 8080)
+}
+export default const_1;
+
 
 4. After all of the above, you are ready to run this locally ! Simply run the following command: yarn start
