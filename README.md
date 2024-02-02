@@ -8,7 +8,7 @@ UI Operation will be divided into 4 main parts:
 2. Create
 3. Update
 4. Delete
-
+------------------
 
 1. ** Landing **
 First of all, as this todo list already deployed onto AWS, you can play with this Todo List by going to the link below:
