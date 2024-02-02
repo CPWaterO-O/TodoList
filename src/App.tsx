@@ -68,7 +68,7 @@ var App: React.FC = () => {
 
   return (
     <Row>
-      <Col span={12} push={6}>
+      <Col span={24} >
         <Card className='mainBackGround'>
           <div className='tlt'>TODO List -  By Puil Chau</div>
           <Divider></Divider>
