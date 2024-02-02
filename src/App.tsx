@@ -51,7 +51,9 @@ var App: React.FC = () => {
 
 
   const loadAllDuties = () => {
-    axios.get(`${const_1.REACT_APP_API_SERVER}/duty`)
+    axios.get(`${const_1.REACT_APP_API_SERVER}/duty`,{ headers: {
+      "Content-Type" : "application/json",
+  }})
     .then(response => {
       setDutyFullLists(response.data.result)
     })
